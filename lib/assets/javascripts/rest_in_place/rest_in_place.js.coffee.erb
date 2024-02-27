@@ -110,6 +110,7 @@ class RestInPlaceEditor
       @objectName    = @objectName    || $(parent).attr("data-object")
       @attributeName = @attributeName || $(parent).attr("data-attribute")
       @placeholder   = @placeholder   || $(parent).attr("data-placeholder")
+      @list          = @list          || $(parent).attr("data-list")
 
     @$element.parents().each (index, parent) =>
       @objectName = @objectName || res[1] if res = parent.id.match(/^(\w+)_(\d+)$/i)
@@ -119,6 +120,7 @@ class RestInPlaceEditor
     @objectName    = @$element.attr("data-object")      || @objectName
     @attributeName = @$element.attr("data-attribute")   || @attributeName
     @placeholder   = @$element.attr("data-placeholder") || @placeholder || ''
+    @list          = @$element.attr("data-list")        || @list        || ''
 
   # Overwrites formtype specific method implementations during initialization
   bindForm : ->
@@ -201,7 +203,7 @@ RestInPlaceEditor.forms =
     activateForm : ->
       value = $.trim(@elementHTML())
       @$element.html("""<form action="javascript:void(0)" style="display:inline;">
-        <input type="text" class="rest-in-place-#{@attributeName}" placeholder="#{@placeholder}">
+        <input type="text" class="rest-in-place-#{@attributeName}" placeholder="#{@placeholder}" list="#{@list}">
         </form>""")
       @$element.find('input').val(value)
       @$element.find('input')[0].select()
@@ -219,7 +221,7 @@ RestInPlaceEditor.forms =
     activateForm : ->
       value = $.trim(@elementHTML())
       @$element.html("""<form action="javascript:void(0)" style="display:inline;">
-        <textarea class="rest-in-place-#{@attributeName}" placeholder="#{@placeholder}"></textarea>
+        <textarea class="rest-in-place-#{@attributeName}" placeholder="#{@placeholder}" list="#{@list}"></textarea>
         </form>""")
       @$element.find('textarea').val(value)
       @$element.find('textarea')[0].select()

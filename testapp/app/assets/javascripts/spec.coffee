@@ -11,7 +11,7 @@ describe "Setup", ->
   describe "looking up attributes in parents", ->
     beforeEach ->
       rip = makeRip """
-        <p data-url="localhorst" data-formtype="textarea" data-object="person" data-attribute="name" data-placeholder="Enter name">
+        <p data-url="localhorst" data-formtype="textarea" data-object="person" data-attribute="name" data-placeholder="Enter name" data-list="names">
           <span>Blubb</span>
         </p>"""
     it "should find the data-url"        , -> expect(rip.url).toEqual('localhorst')
@@ -19,6 +19,7 @@ describe "Setup", ->
     it "should find the data-object"     , -> expect(rip.objectName).toEqual('person')
     it "should find the data-attribute"  , -> expect(rip.attributeName).toEqual('name')
     it "should find the data-placeholder", -> expect(rip.placeholder).toEqual('Enter name')
+    it "should find the data-list"       , -> expect(rip.list).toEqual('names')
 
     it "should prefer inner settings over outer", ->
       rip = makeRip """<div data-object="outer"><p data-url="inner"><span>Blubb</span></p></div>"""
@@ -41,14 +42,15 @@ describe "Setup", ->
       expect(rip.formType).toEqual('input')
     it "should take precedence over anything set through parents", ->
       rip = makeRip """
-        <p data-url="localhorst" data-formtype="textarea1" data-object="person" data-attribute="name" data-placeholder="placeholder">
-          <span data-url="localhorst2" data-formtype="textarea" data-object="person2" data-attribute="name2" data-placeholder="placeholder2">Blubb</span>
+        <p data-url="localhorst" data-formtype="textarea1" data-object="person" data-attribute="name" data-placeholder="placeholder" data-list="names">
+          <span data-url="localhorst2" data-formtype="textarea" data-object="person2" data-attribute="name2" data-placeholder="placeholder2" data-list="names2">Blubb</span>
         </p>"""
       expect(rip.url).toEqual('localhorst2')
       expect(rip.formType).toEqual('textarea')
       expect(rip.objectName).toEqual('person2')
       expect(rip.attributeName).toEqual('name2')
       expect(rip.placeholder).toEqual('placeholder2')
+      expect(rip.list).toEqual('names2')
 
 describe "Server communication", ->
   beforeEach ->
